@@ -1,4 +1,4 @@
-GitMine ![Travis CI](https://travis-ci.org/Treehopper/gitmine.png?branch=master "Build Status")
+GitMine ![Travis CI](https://api.travis-ci.org/Treehopper/GitMine.svg "Build Status")
 ===================
 
 Install from p2 update site
