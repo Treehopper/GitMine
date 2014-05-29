@@ -10,6 +10,8 @@
 		<module>eu.hohenegger.gitmine.feature</module>
 		<module>eu.hohenegger.gitmine.p2updatesite</module>
 		<module>eu.hohenegger.gitmine</module>
+		<module>eu.hohenegger.gitmine.ui</module>
+		<module>eu.hohenegger.gitmine.ui.e3</module>
 		<module>eu.hohenegger.gitmine.test</module>
 		<module>eu.hohenegger.gitmine.releng.targetplatform</module>
 	</modules>

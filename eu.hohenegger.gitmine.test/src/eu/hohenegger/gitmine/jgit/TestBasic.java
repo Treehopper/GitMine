@@ -9,10 +9,13 @@
  ******************************************************************************/
 package eu.hohenegger.gitmine.jgit;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -59,9 +62,28 @@ public class TestBasic {
 
 	@Test
 	public void testScan() throws RevisionSyntaxException, AmbiguousObjectException, IncorrectObjectTypeException, IOException {
-		Map<String, List<RevCommit>> authorToCommits = miner.scanAuthors(git);
+		Map<PersonIdent, List<RevCommit>> authorToCommits = miner.scanAuthors(git.getRepository());
 		assertTrue(!authorToCommits.isEmpty());
-		assertTrue(!authorToCommits.get("alice").isEmpty());
+		
+	}
+	
+	Date createDate(int year, int month, int day) {
+		Calendar cal = Calendar.getInstance();
+		
+		cal.set(year, month, day, 0, 0, 0);
+		return cal.getTime();
+	}
+	
+	@Test
+	public void testDaysInBetween() {
+		Date firstDay = createDate(2014, Calendar.JANUARY, 1);
+		Date lastDay = createDate(2014, Calendar.FEBRUARY, 1);
+		List<Date> daysInBetween = MiningService.getDaysInBetween(firstDay.getTime(), lastDay.getTime());
+		assertEquals(30, daysInBetween.size());
+		for (Date date : daysInBetween) {
+			assertTrue(date.compareTo(firstDay) > 0);
+			assertTrue(date.compareTo(lastDay) < 0);
+		}
 	}
 	
 	public void commit(PersonIdent author) throws IOException, JGitInternalException,

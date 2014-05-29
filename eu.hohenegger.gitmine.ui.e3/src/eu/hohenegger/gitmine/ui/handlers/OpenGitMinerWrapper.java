@@ -7,20 +7,13 @@
  * Contributors:
  *     Max Hohenegger - initial implementation
  ******************************************************************************/
-package eu.hohenegger.gitmine;
+package eu.hohenegger.gitmine.ui.handlers;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.Map;
-
-import org.eclipse.jgit.lib.PersonIdent;
-import org.eclipse.jgit.lib.Repository;
-import org.eclipse.jgit.revwalk.RevCommit;
+import org.eclipse.e4.tools.compat.parts.DIHandler;
 
 
-public interface IMiningService {
-	Map<PersonIdent, List<RevCommit>> scanAuthors(Repository repository) throws IOException;
-
-	List<Integer> scanCommitsPerDay(Repository repository)
-			throws IOException;
+public class OpenGitMinerWrapper extends DIHandler<OpenGitMiner> {
+	public OpenGitMinerWrapper() {
+		super(OpenGitMiner.class);
+	}
 }

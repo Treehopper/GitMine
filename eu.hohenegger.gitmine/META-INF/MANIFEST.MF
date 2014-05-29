@@ -14,3 +14,4 @@ Import-Package: javax.inject;version="1.0.0",javax.annotation; version="1.0.0"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Service-Component: OSGI-INF/service.xml
+Export-Package: eu.hohenegger.gitmine

@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: E3
+Bundle-SymbolicName: eu.hohenegger.gitmine.ui.e3;singleton:=true
+Bundle-Version: 1.1.0.qualifier
+Fragment-Host: eu.hohenegger.gitmine.ui;bundle-version="1.1.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Require-Bundle: org.eclipse.e4.tools.compat,
+ org.eclipse.ui,
+ org.eclipse.core.runtime
