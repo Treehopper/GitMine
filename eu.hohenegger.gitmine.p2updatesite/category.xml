@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <feature url="" id="eu.hohenegger.gitmine.feature" version="0.0.0">
+      <category name="eu.hohenegger.gitmine"/>
+   </feature>
+   <category-def name="eu.hohenegger.gitmine" label="GitMine"/>
+</site>
