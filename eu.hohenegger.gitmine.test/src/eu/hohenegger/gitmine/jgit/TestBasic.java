@@ -33,7 +33,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import eu.hohenegger.gitmine.jgit.impl.Miner;
+import eu.hohenegger.gitmine.IMiningService;
+import eu.hohenegger.gitmine.jgit.impl.MiningService;
 
 public class TestBasic {
 
@@ -41,7 +42,7 @@ public class TestBasic {
 	private static final String NO_EXTENSION = "";
 	private static final String TMP_REPO_PREFIX = "GitRepo";
 	private Git git;
-	private Miner miner;
+	private IMiningService miner;
 
 	@Before
 	public void init() throws IOException, GitAPIException {
@@ -53,7 +54,7 @@ public class TestBasic {
 		commit(new PersonIdent("alice", "alice@acme.com"));
 		commit(new PersonIdent("bo", "bob@acme.com"));
 		
-		miner = new Miner();
+		miner = new MiningService();
 	}
 
 	@Test

@@ -25,9 +25,12 @@ import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.revwalk.RevWalk;
 
-public class Miner {
+import eu.hohenegger.gitmine.IMiningService;
+
+public class MiningService implements IMiningService {
 	private static final String HEAD_REF = "HEAD";
 	
+	@Override
 	public Map<String, List<RevCommit>> scanAuthors(Git git) throws RevisionSyntaxException, AmbiguousObjectException, IncorrectObjectTypeException, IOException {
 		HashMap<String, List<RevCommit>> result = new HashMap<>();
 		
