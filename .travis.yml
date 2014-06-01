@@ -1,7 +1,0 @@
-language: java
-notifications:
-  email:
-    recipients:
-      - travis-ci.org-gitmine@hohenegger.eu
-    on_success: change
-    on_failure: always
