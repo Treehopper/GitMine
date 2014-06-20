@@ -1,29 +1,29 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?pde version="3.8"?><target name="Eclipse Luna milestones" sequenceNumber="13">
+<?pde version="3.8"?><target name="Eclipse Luna milestones" sequenceNumber="17">
 <locations>
-<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
-<unit id="org.eclipse.jgit.feature.group" version="3.4.0.201405211411-rc1"/>
-<unit id="org.eclipse.egit.feature.group" version="3.4.0.201405211411-rc1"/>
-<unit id="org.eclipse.jgit.http.apache.feature.group" version="3.4.0.201405211411-rc1"/>
-<unit id="org.eclipse.jgit.java7.feature.group" version="3.4.0.201405211411-rc1"/>
-<repository location="http://download.eclipse.org/releases/luna"/>
-</location>
-<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
-<unit id="org.eclipse.sdk.ide" version="4.4.0.I20140528-2000"/>
-<unit id="org.eclipse.platform.ide" version="4.4.0.I20140528-2000"/>
-<unit id="org.eclipse.platform.sdk" version="4.4.0.I20140528-2000"/>
-<repository location="http://download.eclipse.org/eclipse/updates/4.4milestones"/>
-</location>
-<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
-<unit id="org.eclipse.nebula.visualization.feature.feature.group" version="0.9.9.201405151353"/>
-<repository location="http://download.eclipse.org/technology/nebula/snapshot"/>
-</location>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="org.junit" version="4.11.0.v201303080030"/>
 <repository location="http://download.eclipse.org/tools/orbit/downloads/drops/R20140525021250/repository"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
-<unit id="org.eclipse.e4.tools.e3x.bridge.feature.feature.group" version="0.14.0.v20140522-1045"/>
+<unit id="org.eclipse.jgit.feature.group" version="3.4.0.201406041058-rc3"/>
+<unit id="org.eclipse.jgit.java7.feature.group" version="3.4.0.201406041058-rc3"/>
+<unit id="org.eclipse.egit.feature.group" version="3.4.0.201406041058-rc3"/>
+<unit id="org.eclipse.jgit.http.apache.feature.group" version="3.4.0.201406041058-rc3"/>
+<repository location="http://download.eclipse.org/releases/luna"/>
+</location>
+<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
+<unit id="org.eclipse.sdk.ide" version="4.4.0.I20140606-1215"/>
+<unit id="org.eclipse.platform.sdk" version="4.4.0.I20140606-1215"/>
+<unit id="org.eclipse.platform.ide" version="4.4.0.I20140606-1215"/>
+<repository location="http://download.eclipse.org/eclipse/updates/4.4milestones"/>
+</location>
+<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
+<unit id="org.eclipse.nebula.visualization.feature.feature.group" version="0.9.9.201406170952"/>
+<repository location="http://download.eclipse.org/technology/nebula/snapshot"/>
+</location>
+<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
+<unit id="org.eclipse.e4.tools.e3x.bridge.feature.feature.group" version="0.14.0.v20140611-1610"/>
 <repository location="http://download.vogella.com/luna/e4tools"/>
 </location>
 </locations>
