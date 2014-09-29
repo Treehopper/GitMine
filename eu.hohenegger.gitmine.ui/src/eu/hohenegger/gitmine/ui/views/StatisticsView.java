@@ -31,10 +31,12 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.part.IShowInTarget;
+import org.eclipse.ui.part.ShowInContext;
 
 import eu.hohenegger.gitmine.IMiningService;
 
-public class StatisticsView {
+public class StatisticsView implements IShowInTarget {
 	public static final String VIEWCOM_STATISTICS_OPEN = "viewcommunication/asyncEvent/statistics/open";
 
 	public static final String MPART_ID = "eu.hohenegger.gitmine.ui.statistics";
@@ -117,5 +119,11 @@ public class StatisticsView {
 		child.dispose();
 		lws.getUpdateManager().dispose();
 		lws.getRootFigure().erase();
+	}
+
+	@Override
+	public boolean show(ShowInContext context) {
+		// TODO Auto-generated method stub
+		return true;
 	}
 }

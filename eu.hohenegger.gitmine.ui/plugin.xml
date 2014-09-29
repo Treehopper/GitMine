@@ -12,5 +12,21 @@
             name="Git Repository Statistics"
             restorable="true">
       </e4view>
+      <e4view
+            category="org.eclipse.ui"
+            class="eu.hohenegger.gitmine.ui.views.TimeLapseView"
+            icon="icons/sample.gif"
+            id="eu.hohenegger.gitmine.ui.timelapse"
+            name="Time Lapse View"
+            restorable="true">
+      </e4view>
+   </extension>
+   <extension
+         point="org.eclipse.ui.perspectiveExtensions">
+      <perspectiveExtension
+            targetID="*">
+         <showInPart
+               id="eu.hohenegger.gitmine.ui.statistics"></showInPart>
+      </perspectiveExtension>
    </extension>
 </plugin>
