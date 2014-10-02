@@ -12,21 +12,27 @@ package eu.hohenegger.gitmine.ui.views;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.PlatformObject;
-import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.services.IServiceConstants;
 import org.eclipse.egit.core.project.RepositoryMapping;
+import org.eclipse.egit.ui.internal.CompareUtils;
+import org.eclipse.egit.ui.internal.merge.GitCompareEditorInput;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.LogCommand;
@@ -37,62 +43,46 @@ import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Scale;
-import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.IShowInTarget;
 import org.eclipse.ui.part.ShowInContext;
 
 public class TimeLapseView implements IShowInTarget {
-	public static final String VIEWCOM_STATISTICS_OPEN = "viewcommunication/asyncEvent/statistics/open";
-
 	public static final String MPART_ID = "eu.hohenegger.gitmine.ui.statistics";
 
-	@Inject
-	private IEclipseContext iEclipseContext;
+	private Scale scale;
 
-	@Inject
-	private Shell activeShell;
+	private List<RevCommit> commitList;
+
+	private Repository repository;
+
+	private IResource resource;
 
 	@PostConstruct
 	public void createPartControl(Composite shell, MPart part) {
-		Scale scale = new Scale(shell, SWT.BORDER);
+		scale = new Scale(shell, SWT.BORDER);
 		Rectangle clientArea = shell.getClientArea();
 		scale.setBounds(clientArea.x, clientArea.y, 200, 64);
-		scale.setMaximum(40);
-		scale.setPageIncrement(5);
 
-		// Slider slider = new Slider(shell, SWT.HORIZONTAL);
-		// slider.setBounds(clientArea.x + 10, clientArea.y + 10, 200, 32);
-		// slider.addListener(SWT.Selection, new Listener() {
-		// @Override
-		// public void handleEvent(Event event) {
-		// String string = "SWT.NONE";
-		// switch (event.detail) {
-		// case SWT.DRAG:
-		// string = "SWT.DRAG";
-		// break;
-		// case SWT.HOME:
-		// string = "SWT.HOME";
-		// break;
-		// case SWT.END:
-		// string = "SWT.END";
-		// break;
-		// case SWT.ARROW_DOWN:
-		// string = "SWT.ARROW_DOWN";
-		// break;
-		// case SWT.ARROW_UP:
-		// string = "SWT.ARROW_UP";
-		// break;
-		// case SWT.PAGE_DOWN:
-		// string = "SWT.PAGE_DOWN";
-		// break;
-		// case SWT.PAGE_UP:
-		// string = "SWT.PAGE_UP";
-		// break;
-		// }
-		// System.out.println("Scroll detail -> " + string);
-		// }
-		// });
+		scale.addListener(SWT.Selection, new Listener() {
+			@Override
+			public void handleEvent(Event event) {
+				if (commitList == null || commitList.isEmpty()) {
+					return;
+				}
+				RevCommit revCommit = commitList.get(scale.getSelection());
+				RevCommit prevCommit = revCommit;
+				if (scale.getSelection() > 0) {
+					prevCommit = commitList.get(scale.getSelection() - 1);
+				}
+				execute(repository, resource, prevCommit, revCommit);
+				System.out.println(revCommit.getFullMessage());
+			}
+		});
 	}
 
 	@Inject
@@ -102,11 +92,15 @@ public class TimeLapseView implements IShowInTarget {
 			return;
 		}
 
+		if (!(selection.getFirstElement() instanceof PlatformObject)) {
+			return;
+		}
+
 		PlatformObject firstElement = (PlatformObject) selection
 				.getFirstElement();
 
 
-		IResource resource = (IResource) firstElement
+		resource = (IResource) firstElement
 				.getAdapter(IResource.class);
 
 		IProject project = resource.getProject();
@@ -114,26 +108,63 @@ public class TimeLapseView implements IShowInTarget {
 
 		RepositoryMapping mapping = RepositoryMapping.getMapping(project
 				.getLocation());
-		Repository repository = mapping.getRepository();
+		repository = mapping.getRepository();
 
 		String relativePath = createRelativePath(resource.getLocation()
 				.toString(), repository);
 
 		Git git = Git.wrap(repository);
 
+		commitList = new ArrayList<>();
+
 		Iterable<RevCommit> commits;
 		LogCommand logCmd = git.log().addPath(relativePath.toString());
 		try {
 			commits = logCmd.call();
+
 			for (RevCommit revCommit : commits) {
-				System.out.println(revCommit.getFullMessage());
+				commitList.add(0, revCommit);
 			}
+			scale.setMaximum(commitList.size() - 1);
 		} catch (NoHeadException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (GitAPIException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}
+	}
+
+	public void execute(Repository repo, Object input, RevCommit commit1,
+			RevCommit commit2) {
+		IWorkbenchPage workBenchPage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+		if (input instanceof IFile) {
+			IResource[] resources = new IResource[] { (IFile) input, };
+			try {
+				CompareUtils.compare(resources, repo, commit1.getName(),
+						commit2.getName(), false, workBenchPage);
+			} catch (IOException e) {
+				// TODO
+				e.printStackTrace();
+			}
+		} else if (input instanceof File) {
+			File fileInput = (File) input;
+			IPath location = new Path(fileInput.getAbsolutePath());
+			try {
+				CompareUtils.compare(location, repo, commit1.getName(),
+						commit2.getName(), false, workBenchPage);
+			} catch (IOException e) {
+				// TODO
+				e.printStackTrace();
+			}
+		} else if (input instanceof IResource) {
+			GitCompareEditorInput compareInput = new GitCompareEditorInput(
+					commit1.name(), commit2.name(), (IResource) input);
+			CompareUtils.openInCompare(workBenchPage, compareInput);
+		} else if (input == null) {
+			GitCompareEditorInput compareInput = new GitCompareEditorInput(
+					commit1.name(), commit2.name(), repo);
+			CompareUtils.openInCompare(workBenchPage, compareInput);
 		}
 	}
 
@@ -159,6 +190,7 @@ public class TimeLapseView implements IShowInTarget {
 
 	@Focus
 	public void setFocus() {
+		scale.setFocus();
 	}
 
 	@PreDestroy
