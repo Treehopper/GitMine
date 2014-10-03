@@ -20,18 +20,17 @@ import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import org.eclipse.core.resources.IFile;
+import org.eclipse.compare.CompareEditorInput;
+import org.eclipse.compare.CompareUI;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
-import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.PlatformObject;
 import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.services.IServiceConstants;
 import org.eclipse.egit.core.project.RepositoryMapping;
-import org.eclipse.egit.ui.internal.CompareUtils;
+import org.eclipse.egit.ui.internal.GitCompareFileRevisionEditorInput;
 import org.eclipse.egit.ui.internal.merge.GitCompareEditorInput;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jgit.api.Git;
@@ -46,6 +45,10 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Scale;
+import org.eclipse.ui.IEditorInput;
+import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.IEditorReference;
+import org.eclipse.ui.IReusableEditor;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.IShowInTarget;
@@ -88,6 +91,10 @@ public class TimeLapseView implements IShowInTarget {
 	@Inject
 	public void setSelection(
 			@Optional @Named(IServiceConstants.ACTIVE_SELECTION) IStructuredSelection selection) {
+		if (scale == null || scale.isDisposed()) {
+			return;
+		}
+
 		if (selection == null) {
 			return;
 		}
@@ -135,37 +142,51 @@ public class TimeLapseView implements IShowInTarget {
 		}
 	}
 
-	public void execute(Repository repo, Object input, RevCommit commit1,
+	private void execute(Repository repo, Object input, RevCommit commit1,
 			RevCommit commit2) {
 		IWorkbenchPage workBenchPage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-		if (input instanceof IFile) {
-			IResource[] resources = new IResource[] { (IFile) input, };
-			try {
-				CompareUtils.compare(resources, repo, commit1.getName(),
-						commit2.getName(), false, workBenchPage);
-			} catch (IOException e) {
-				// TODO
-				e.printStackTrace();
+		GitCompareEditorInput compareInput = new GitCompareEditorInput(
+				commit1.name(), commit2.name(), (IResource) input);
+		openInCompare(workBenchPage, compareInput);
+	}
+
+	private static void openInCompare(IWorkbenchPage workBenchPage,
+			CompareEditorInput input) {
+		// find reusable editor
+		IEditorPart editor = null;
+		IEditorReference[] editorRefs = workBenchPage.getEditorReferences();
+		for (IEditorReference iEditorReference : editorRefs) {
+			IEditorPart part = iEditorReference.getEditor(false);
+			if (part == null
+					|| !(isGitInput(part) && part instanceof IReusableEditor)) {
+				continue;
 			}
-		} else if (input instanceof File) {
-			File fileInput = (File) input;
-			IPath location = new Path(fileInput.getAbsolutePath());
-			try {
-				CompareUtils.compare(location, repo, commit1.getName(),
-						commit2.getName(), false, workBenchPage);
-			} catch (IOException e) {
-				// TODO
-				e.printStackTrace();
+			if (isAlwaysReuse() || part.getEditorInput().equals(input)) {
+				editor = part;
+				break;
 			}
-		} else if (input instanceof IResource) {
-			GitCompareEditorInput compareInput = new GitCompareEditorInput(
-					commit1.name(), commit2.name(), (IResource) input);
-			CompareUtils.openInCompare(workBenchPage, compareInput);
-		} else if (input == null) {
-			GitCompareEditorInput compareInput = new GitCompareEditorInput(
-					commit1.name(), commit2.name(), repo);
-			CompareUtils.openInCompare(workBenchPage, compareInput);
+
 		}
+
+		// open input
+		if (editor != null) {
+			IEditorInput otherInput = editor.getEditorInput();
+			if (isAlwaysReuse() || otherInput.equals(input)) {
+				CompareUI.reuseCompareEditor(input, (IReusableEditor) editor);
+			}
+			workBenchPage.bringToTop(editor);
+		} else {
+			CompareUI.openCompareEditor(input, false);
+		}
+	}
+
+	private static boolean isGitInput(IEditorPart part) {
+		return part.getEditorInput() instanceof GitCompareFileRevisionEditorInput
+				|| part.getEditorInput() instanceof GitCompareEditorInput;
+	}
+
+	private static boolean isAlwaysReuse() {
+		return false;
 	}
 
 	private String createRelativePath(String absolutePath, Repository repository) {
