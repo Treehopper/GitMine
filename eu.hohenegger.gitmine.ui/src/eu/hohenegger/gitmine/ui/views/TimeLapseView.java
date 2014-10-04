@@ -27,7 +27,6 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.PlatformObject;
 import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.ui.di.Focus;
-import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.services.IServiceConstants;
 import org.eclipse.egit.core.project.RepositoryMapping;
 import org.eclipse.egit.ui.internal.GitCompareFileRevisionEditorInput;
@@ -66,9 +65,9 @@ public class TimeLapseView implements IShowInTarget {
 	private IResource resource;
 
 	@PostConstruct
-	public void createPartControl(Composite shell, MPart part) {
-		scale = new Scale(shell, SWT.BORDER);
-		Rectangle clientArea = shell.getClientArea();
+	public void createPartControl(Composite parent) {
+		scale = new Scale(parent, SWT.BORDER);
+		Rectangle clientArea = parent.getClientArea();
 		scale.setBounds(clientArea.x, clientArea.y, 200, 64);
 
 		scale.addListener(SWT.Selection, new Listener() {
@@ -83,9 +82,9 @@ public class TimeLapseView implements IShowInTarget {
 					prevCommit = commitList.get(scale.getSelection() - 1);
 				}
 				execute(repository, resource, prevCommit, revCommit);
-				System.out.println(revCommit.getFullMessage());
 			}
 		});
+
 	}
 
 	@Inject
