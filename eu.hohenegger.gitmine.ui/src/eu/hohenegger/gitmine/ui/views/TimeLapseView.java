@@ -31,6 +31,8 @@ import org.eclipse.e4.ui.services.IServiceConstants;
 import org.eclipse.egit.core.project.RepositoryMapping;
 import org.eclipse.egit.ui.internal.GitCompareFileRevisionEditorInput;
 import org.eclipse.egit.ui.internal.merge.GitCompareEditorInput;
+import org.eclipse.jface.layout.GridDataFactory;
+import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.LogCommand;
@@ -40,6 +42,8 @@ import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Rectangle;
+import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
@@ -64,10 +68,18 @@ public class TimeLapseView implements IShowInTarget {
 
 	private IResource resource;
 
+	private Button button;
+
 	@PostConstruct
 	public void createPartControl(Composite parent) {
-		scale = new Scale(parent, SWT.BORDER);
-		Rectangle clientArea = parent.getClientArea();
+		parent.setLayout(new FillLayout());
+		Composite main = new Composite(parent, SWT.NONE);
+		GridLayoutFactory.fillDefaults().numColumns(1).applyTo(main);
+		Composite scaleParent = new Composite(main, SWT.NONE);
+		scaleParent.setLayout(new FillLayout());
+		GridDataFactory.fillDefaults().grab(true, true).applyTo(scaleParent);
+		scale = new Scale(scaleParent, SWT.NONE);
+		Rectangle clientArea = scaleParent.getClientArea();
 		scale.setBounds(clientArea.x, clientArea.y, 200, 64);
 
 		scale.addListener(SWT.Selection, new Listener() {
@@ -85,6 +97,8 @@ public class TimeLapseView implements IShowInTarget {
 			}
 		});
 
+		button = new Button(main, SWT.CHECK);
+		button.setText("Reuse Editor");
 	}
 
 	@Inject
@@ -149,7 +163,7 @@ public class TimeLapseView implements IShowInTarget {
 		openInCompare(workBenchPage, compareInput);
 	}
 
-	private static void openInCompare(IWorkbenchPage workBenchPage,
+	private void openInCompare(IWorkbenchPage workBenchPage,
 			CompareEditorInput input) {
 		// find reusable editor
 		IEditorPart editor = null;
@@ -184,8 +198,8 @@ public class TimeLapseView implements IShowInTarget {
 				|| part.getEditorInput() instanceof GitCompareEditorInput;
 	}
 
-	private static boolean isAlwaysReuse() {
-		return false;
+	private boolean isAlwaysReuse() {
+		return button.getSelection();
 	}
 
 	private String createRelativePath(String absolutePath, Repository repository) {
