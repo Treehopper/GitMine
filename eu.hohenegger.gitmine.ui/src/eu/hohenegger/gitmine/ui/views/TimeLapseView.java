@@ -13,6 +13,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -50,6 +51,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Scale;
+import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IEditorReference;
@@ -78,9 +80,15 @@ public class TimeLapseView implements IShowInTarget {
 		Composite main = new Composite(parent, SWT.NONE);
 		GridLayoutFactory.fillDefaults().numColumns(1).applyTo(main);
 		Composite scaleParent = new Composite(main, SWT.NONE);
-		scaleParent.setLayout(new FillLayout());
+		GridLayoutFactory.fillDefaults().numColumns(2).applyTo(scaleParent);
 		GridDataFactory.fillDefaults().grab(true, true).applyTo(scaleParent);
 		scale = new Scale(scaleParent, SWT.NONE);
+		GridDataFactory.fillDefaults().grab(true, true).applyTo(scale);
+		final Text scaleValue = new Text(scaleParent, SWT.BORDER
+				| SWT.MULTI | SWT.WRAP | SWT.V_SCROLL);
+		GridDataFactory.fillDefaults().hint(250, 25).grab(false, false)
+		.applyTo(scaleValue);
+
 		Rectangle clientArea = scaleParent.getClientArea();
 		scale.setBounds(clientArea.x, clientArea.y, 200, 64);
 
@@ -91,6 +99,14 @@ public class TimeLapseView implements IShowInTarget {
 					return;
 				}
 				RevCommit revCommit = commitList.get(scale.getSelection());
+
+				scaleValue.setText(new Date(revCommit.getCommitTime())
+				.toString()
+				+ "\n\n"
+				+ revCommit.getName()
+				+ "\n\n"
+				+ revCommit.getShortMessage());
+
 				RevCommit prevCommit = revCommit;
 				if (scale.getSelection() > 0) {
 					prevCommit = commitList.get(scale.getSelection() - 1);
