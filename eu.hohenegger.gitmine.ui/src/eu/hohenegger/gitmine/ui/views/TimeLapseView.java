@@ -156,7 +156,11 @@ public class TimeLapseView implements IShowInTarget {
 		commitList = new ArrayList<>();
 
 		Iterable<RevCommit> commits;
-		LogCommand logCmd = git.log().addPath(relativePath.toString());
+
+		LogCommand logCmd = git.log();
+		if (!relativePath.isEmpty()) {
+			logCmd.addPath(relativePath);
+		}
 		try {
 			commits = logCmd.call();
 
