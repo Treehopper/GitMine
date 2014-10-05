@@ -41,6 +41,8 @@ import org.eclipse.jgit.api.errors.NoHeadException;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Button;
@@ -99,6 +101,18 @@ public class TimeLapseView implements IShowInTarget {
 
 		checkButtonReuseEditor = new Button(main, SWT.CHECK);
 		checkButtonReuseEditor.setText("Reuse Editor");
+
+		Button closeEditorsButton = new Button(main, SWT.PUSH);
+		closeEditorsButton.setText("Close All Compare Editors");
+		closeEditorsButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				IWorkbenchPage activePage = PlatformUI.getWorkbench()
+						.getActiveWorkbenchWindow().getActivePage();
+				closeAllEditors(activePage);
+				super.widgetSelected(e);
+			}
+		});
 	}
 
 	@Inject
@@ -122,6 +136,10 @@ public class TimeLapseView implements IShowInTarget {
 
 		resource = (IResource) firstElement
 				.getAdapter(IResource.class);
+
+		if (resource == null) {
+			return;
+		}
 
 		IProject project = resource.getProject();
 
@@ -190,6 +208,20 @@ public class TimeLapseView implements IShowInTarget {
 			workBenchPage.bringToTop(editor);
 		} else {
 			CompareUI.openCompareEditor(input, false);
+		}
+	}
+
+	private void closeAllEditors(IWorkbenchPage workBenchPage) {
+		IEditorReference[] editorRefs = workBenchPage.getEditorReferences();
+		for (IEditorReference iEditorReference : editorRefs) {
+			IEditorPart part = iEditorReference.getEditor(false);
+			if (part == null
+					|| !(isGitInput(part) && part instanceof IReusableEditor)) {
+				continue;
+			}
+
+			workBenchPage.closeEditor(part, false);
+
 		}
 	}
 
