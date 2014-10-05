@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>eu.hohenegger.gitmine</groupId>
 	<artifactId>parent</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
+	<version>1.1.0</version>
 	<packaging>pom</packaging>
 
 	<modules>
@@ -11,7 +11,6 @@
 		<module>eu.hohenegger.gitmine.p2updatesite</module>
 		<module>eu.hohenegger.gitmine</module>
 		<module>eu.hohenegger.gitmine.ui</module>
-		<module>eu.hohenegger.gitmine.ui.e3</module>
 		<module>eu.hohenegger.gitmine.test</module>
 		<module>eu.hohenegger.gitmine.releng.targetplatform</module>
 	</modules>
@@ -32,7 +31,7 @@
 						<artifact>
 							<groupId>eu.hohenegger.gitmine</groupId>
 							<artifactId>eu.hohenegger.gitmine.releng.targetplatform</artifactId>
-							<version>0.0.1-SNAPSHOT</version>
+							<version>1.1.0</version>
 						</artifact>
 					</target>
 					<environments>
