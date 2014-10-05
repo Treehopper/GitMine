@@ -68,7 +68,7 @@ public class TimeLapseView implements IShowInTarget {
 
 	private IResource resource;
 
-	private Button button;
+	private Button checkButtonReuseEditor;
 
 	@PostConstruct
 	public void createPartControl(Composite parent) {
@@ -97,8 +97,8 @@ public class TimeLapseView implements IShowInTarget {
 			}
 		});
 
-		button = new Button(main, SWT.CHECK);
-		button.setText("Reuse Editor");
+		checkButtonReuseEditor = new Button(main, SWT.CHECK);
+		checkButtonReuseEditor.setText("Reuse Editor");
 	}
 
 	@Inject
@@ -199,7 +199,7 @@ public class TimeLapseView implements IShowInTarget {
 	}
 
 	private boolean isAlwaysReuse() {
-		return button.getSelection();
+		return checkButtonReuseEditor.getSelection();
 	}
 
 	private String createRelativePath(String absolutePath, Repository repository) {
