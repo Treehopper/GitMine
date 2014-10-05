@@ -1,22 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?pde version="3.8"?><target name="Eclipse Luna milestones" sequenceNumber="37">
+<?pde version="3.8"?><target name="Eclipse Luna milestones" sequenceNumber="42">
 <locations>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
-<unit id="org.eclipse.jgit.http.apache.feature.group" version="3.4.0.201406110918-r"/>
-<unit id="org.eclipse.jgit.feature.group" version="3.4.0.201406110918-r"/>
-<unit id="org.eclipse.egit.feature.group" version="3.4.0.201406110918-r"/>
-<unit id="org.eclipse.jgit.java7.feature.group" version="3.4.0.201406110918-r"/>
-<repository location="http://download.eclipse.org/releases/luna"/>
-</location>
-<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
-<unit id="org.eclipse.e4.tools.e3x.bridge.feature.feature.group" version="0.14.0.v20140611-1610"/>
-<repository location="http://download.eclipse.org/e4/downloads/drops/S-0.16-201408072200/repository"/>
-</location>
-<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
-<unit id="org.eclipse.sdk.ide" version="4.4.0.I20140606-1215"/>
-<unit id="org.eclipse.platform.sdk" version="4.4.0.I20140606-1215"/>
-<unit id="org.eclipse.platform.ide" version="4.4.0.I20140606-1215"/>
+<unit id="org.eclipse.sdk.ide" version="4.4.1.M20140925-0400"/>
+<unit id="org.eclipse.platform.sdk" version="4.4.1.M20140925-0400"/>
+<unit id="org.eclipse.platform.ide" version="4.4.1.M20140925-0400"/>
 <repository location="http://download.eclipse.org/eclipse/updates/4.4"/>
+</location>
+<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
+<unit id="org.eclipse.egit.feature.group" version="3.4.1.201406201815-r"/>
+<unit id="org.eclipse.jgit.feature.group" version="3.4.1.201406201815-r"/>
+<repository location="http://download.eclipse.org/releases/luna"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="org.eclipse.nebula.visualization.feature.feature.group" version="0.9.9.201410030023"/>
