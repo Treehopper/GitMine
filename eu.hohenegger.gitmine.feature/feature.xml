@@ -208,6 +208,10 @@ Each party waives its rights to a jury trial in any resulting
 litigation.
    </license>
 
+   <requires>
+      <import feature="org.eclipse.nebula.visualization.feature" version="0.0.0"/>
+   </requires>
+
    <plugin
          id="eu.hohenegger.gitmine"
          download-size="0"
