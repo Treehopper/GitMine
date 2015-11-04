@@ -3,7 +3,7 @@
  * All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse
  * Public License v1.0 which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  *     Max Hohenegger - initial implementation
  ******************************************************************************/
@@ -31,14 +31,15 @@ public class OpenGitMiner {
 	@Execute
 	public void execute(EPartService partService, @Named(IServiceConstants.ACTIVE_SELECTION) IStructuredSelection structuredSelection) {
 		PlatformObject firstElement = (PlatformObject) structuredSelection.getFirstElement();
-		Repository repository = (Repository) firstElement.getAdapter(Repository.class);
-		
-		// Open Part
-		String viewId = StatisticsView.MPART_ID;
-		partService.showPart(viewId, PartState.VISIBLE);
-		
-		// Send asynchronous Event
-		broker.post(StatisticsView.VIEWCOM_STATISTICS_OPEN, repository);
+		try (Repository repository = firstElement.getAdapter(Repository.class);) {
+			// Open Part
+			String viewId = StatisticsView.MPART_ID;
+			partService.showPart(viewId, PartState.VISIBLE);
+
+			// Send asynchronous Event
+			broker.post(StatisticsView.VIEWCOM_STATISTICS_OPEN, repository);
+		}
+
 	}
 
 }

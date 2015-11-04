@@ -3,7 +3,7 @@
  * All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse
  * Public License v1.0 which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  *     Max Hohenegger - initial implementation
  ******************************************************************************/
@@ -53,10 +53,10 @@ public class TestBasic {
 		localPath.delete();
 
 		git = Git.init().setDirectory(localPath).setBare(false).call();
-		
+
 		commit(new PersonIdent("alice", "alice@acme.com"));
 		commit(new PersonIdent("bo", "bob@acme.com"));
-		
+
 		miner = new MiningService();
 	}
 
@@ -64,16 +64,16 @@ public class TestBasic {
 	public void testScan() throws RevisionSyntaxException, AmbiguousObjectException, IncorrectObjectTypeException, IOException {
 		Map<PersonIdent, List<RevCommit>> authorToCommits = miner.scanAuthors(git.getRepository());
 		assertTrue(!authorToCommits.isEmpty());
-		
+
 	}
-	
+
 	Date createDate(int year, int month, int day) {
 		Calendar cal = Calendar.getInstance();
-		
+
 		cal.set(year, month, day, 0, 0, 0);
 		return cal.getTime();
 	}
-	
+
 	@Test
 	public void testDaysInBetween() {
 		Date firstDay = createDate(2014, Calendar.JANUARY, 1);
@@ -85,19 +85,21 @@ public class TestBasic {
 			assertTrue(date.compareTo(lastDay) < 0);
 		}
 	}
-	
+
 	public void commit(PersonIdent author) throws IOException, JGitInternalException,
-			UnmergedPathsException, GitAPIException {
+	UnmergedPathsException, GitAPIException {
 		String commitMessage = "Added myfile";
-		
+
 		git.commit().setMessage(commitMessage).setAuthor(author).call();
-		
-		Repository repository = git.getRepository();
-		RevWalk revwalk = new RevWalk(repository);
-		ObjectId HEAD = repository.resolve(HEAD_REF);
-		revwalk.markStart(revwalk.parseCommit(HEAD));
-		
-		revwalk.dispose();
+
+		try (Repository repository = git.getRepository();) {
+			try (RevWalk revwalk = new RevWalk(repository);) {
+				ObjectId HEAD = repository.resolve(HEAD_REF);
+				revwalk.markStart(revwalk.parseCommit(HEAD));
+
+				revwalk.dispose();
+			}
+		}
 	}
 
 	@After

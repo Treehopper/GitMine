@@ -3,7 +3,7 @@
  * All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse
  * Public License v1.0 which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  *     Max Hohenegger - initial implementation
  ******************************************************************************/
@@ -36,18 +36,19 @@ public class MiningService implements IMiningService {
 	public Map<PersonIdent, List<RevCommit>> scanAuthors(Repository repository) throws IOException {
 		HashMap<PersonIdent, List<RevCommit>> result = new HashMap<>();
 
-		RevWalk revwalk = new RevWalk(repository);
-		ObjectId HEAD = repository.resolve(HEAD_REF);
-		revwalk.markStart(revwalk.parseCommit(HEAD));
-		Iterator<RevCommit> it = revwalk.iterator();
-		while (it.hasNext()) {
-			RevCommit commit = it.next();
-			if (!result.containsKey(commit.getAuthorIdent())) {
-				List<RevCommit> list = new ArrayList<>();
-				list.add(commit);
-				result.put(commit.getAuthorIdent(), list);
-			} else {
-				result.get(commit.getAuthorIdent()).add(commit);
+		try (RevWalk revwalk = new RevWalk(repository);) {
+			ObjectId HEAD = repository.resolve(HEAD_REF);
+			revwalk.markStart(revwalk.parseCommit(HEAD));
+			Iterator<RevCommit> it = revwalk.iterator();
+			while (it.hasNext()) {
+				RevCommit commit = it.next();
+				if (!result.containsKey(commit.getAuthorIdent())) {
+					List<RevCommit> list = new ArrayList<>();
+					list.add(commit);
+					result.put(commit.getAuthorIdent(), list);
+				} else {
+					result.get(commit.getAuthorIdent()).add(commit);
+				}
 			}
 		}
 
@@ -59,57 +60,58 @@ public class MiningService implements IMiningService {
 			throws IOException {
 		Map<Long, List<RevCommit>> result = new TreeMap<>();
 
-		RevWalk revwalk = new RevWalk(repository);
-		ObjectId HEAD;
-		HEAD = repository.resolve(HEAD_REF);
-		revwalk.markStart(revwalk.parseCommit(HEAD));
-		Iterator<RevCommit> it = revwalk.iterator();
-		Long dayDate = 0l;
-		while (it.hasNext()) {
-			RevCommit commit = it.next();
+		try (RevWalk revwalk = new RevWalk(repository);) {
+			ObjectId HEAD;
+			HEAD = repository.resolve(HEAD_REF);
+			revwalk.markStart(revwalk.parseCommit(HEAD));
+			Iterator<RevCommit> it = revwalk.iterator();
+			Long dayDate = 0l;
+			while (it.hasNext()) {
+				RevCommit commit = it.next();
 
-			Long currentCommitDay = getCommitDay(commit);
-//			List<Date> daysInBetween = getDaysInBetween(dayDate, currentCommitDay);
-//			for (Date dayInBetween : daysInBetween) {
-//				result.put(dayInBetween.getTime(), new ArrayList<RevCommit>());
-//			}
-			dayDate = currentCommitDay;
-			if (!result.containsKey(dayDate)) {
-				List<RevCommit> list = new ArrayList<>();
-				list.add(commit);
-				result.put(dayDate, list);
-			} else {
-				result.get(dayDate).add(commit);
+				Long currentCommitDay = getCommitDay(commit);
+				//			List<Date> daysInBetween = getDaysInBetween(dayDate, currentCommitDay);
+				//			for (Date dayInBetween : daysInBetween) {
+				//				result.put(dayInBetween.getTime(), new ArrayList<RevCommit>());
+				//			}
+				dayDate = currentCommitDay;
+				if (!result.containsKey(dayDate)) {
+					List<RevCommit> list = new ArrayList<>();
+					list.add(commit);
+					result.put(dayDate, list);
+				} else {
+					result.get(dayDate).add(commit);
+				}
+
 			}
 
-		}
-		
-		
-		Long firstDay = result.keySet().iterator().next();
-		List<Integer> result2 = new ArrayList<>();
-		for (long i = firstDay + MILLISECONDS_IN_A_DAY; i < new Date().getTime(); i += MILLISECONDS_IN_A_DAY) {
-			if (result.containsKey(i)) {
-				result2.add(result.get(i).size());
-			} else {
-				result2.add(0);
+			Long firstDay = result.keySet().iterator().next();
+			List<Integer> result2 = new ArrayList<>();
+			for (long i = firstDay + MILLISECONDS_IN_A_DAY; i < new Date().getTime(); i += MILLISECONDS_IN_A_DAY) {
+				if (result.containsKey(i)) {
+					result2.add(result.get(i).size());
+				} else {
+					result2.add(0);
+				}
 			}
-		}
-		
-//		Set<Long> keySet = result.keySet();
-//		dayDate = 0l;
-//		List<Long> result2 = new ArrayList<>();
-//		for (Long currentCommitDay : keySet) {
-//			List<Date> daysInBetween = getDaysInBetween(dayDate, currentCommitDay);
-//			for (Date dayInBetween : daysInBetween) {
-//				result2.add(dayInBetween.getTime());
-//			}
-//			dayDate = currentCommitDay;
-//		}
-//		for (Long long1 : result2) {
-//			result.put(long1, new ArrayList<RevCommit>());	
-//		}
 
-		return result2;
+			//		Set<Long> keySet = result.keySet();
+			//		dayDate = 0l;
+			//		List<Long> result2 = new ArrayList<>();
+			//		for (Long currentCommitDay : keySet) {
+			//			List<Date> daysInBetween = getDaysInBetween(dayDate, currentCommitDay);
+			//			for (Date dayInBetween : daysInBetween) {
+			//				result2.add(dayInBetween.getTime());
+			//			}
+			//			dayDate = currentCommitDay;
+			//		}
+			//		for (Long long1 : result2) {
+			// result.put(long1, new ArrayList<RevCommit>());
+			//		}
+
+			return result2;
+		}
+
 	}
 
 	public static List<Date> getDaysInBetween(Long firstDay, Long lastDay) {
@@ -123,14 +125,14 @@ public class MiningService implements IMiningService {
 		}
 		return result;
 	}
-	
-//	private void fillGap(Map<Long, List<RevCommit>> result, Long previousDay,
-//			Long nextDay) {
-//		int daysSinceLastCommit = (int) ((nextDay - previousDay) / MILLISECONDS_IN_A_DAY);
-//		for (int i = 1; i < daysSinceLastCommit; i++) {
-//			result.put(Long.valueOf(previousDay + i*MILLISECONDS_IN_A_DAY), new ArrayList<RevCommit>());
-//		}
-//	}
+
+	//	private void fillGap(Map<Long, List<RevCommit>> result, Long previousDay,
+	//			Long nextDay) {
+	//		int daysSinceLastCommit = (int) ((nextDay - previousDay) / MILLISECONDS_IN_A_DAY);
+	//		for (int i = 1; i < daysSinceLastCommit; i++) {
+	//			result.put(Long.valueOf(previousDay + i*MILLISECONDS_IN_A_DAY), new ArrayList<RevCommit>());
+	//		}
+	//	}
 
 	private Long getCommitDay(RevCommit commit) {
 		long commitTime = getCommitTimeInMilliseconds(commit);
