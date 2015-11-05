@@ -13,6 +13,7 @@
 		<module>eu.hohenegger.gitmine.ui</module>
 		<module>eu.hohenegger.gitmine.test</module>
 		<module>eu.hohenegger.gitmine.releng.targetplatform</module>
+		<module>eu.hohenegger.gitmine.timelapse.ui</module>
 	</modules>
 
 	<properties>

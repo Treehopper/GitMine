@@ -3,11 +3,11 @@
  * All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse
  * Public License v1.0 which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  *     Max Hohenegger - initial implementation
  ******************************************************************************/
-package eu.hohenegger.gitmine.ui.views;
+package eu.hohenegger.gitmine.timelapse.ui.views;
 
 import java.io.File;
 import java.io.IOException;
@@ -30,8 +30,8 @@ import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.services.IServiceConstants;
 import org.eclipse.egit.core.project.RepositoryMapping;
-import org.eclipse.egit.ui.internal.GitCompareFileRevisionEditorInput;
 import org.eclipse.egit.ui.internal.merge.GitCompareEditorInput;
+import org.eclipse.egit.ui.internal.revision.GitCompareFileRevisionEditorInput;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -101,11 +101,11 @@ public class TimeLapseView implements IShowInTarget {
 				RevCommit revCommit = commitList.get(scale.getSelection());
 
 				scaleValue.setText(new Date(revCommit.getCommitTime())
-				.toString()
-				+ "\n\n"
-				+ revCommit.getName()
-				+ "\n\n"
-				+ revCommit.getShortMessage());
+						.toString()
+						+ "\n\n"
+						+ revCommit.getName()
+						+ "\n\n"
+						+ revCommit.getShortMessage());
 
 				RevCommit prevCommit = revCommit;
 				if (scale.getSelection() > 0) {
@@ -150,7 +150,7 @@ public class TimeLapseView implements IShowInTarget {
 				.getFirstElement();
 
 
-		resource = (IResource) firstElement
+		resource = firstElement
 				.getAdapter(IResource.class);
 
 		if (resource == null) {
