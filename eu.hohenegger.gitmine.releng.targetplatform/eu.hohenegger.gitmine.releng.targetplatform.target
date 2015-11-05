@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?pde?>
 <!-- generated with https://github.com/mbarbero/fr.obeo.releng.targetplatform -->
-<target name="eu.hohenegger.gitmine.releng.targetplatform" sequenceNumber="1446721912">
+<target name="eu.hohenegger.gitmine.releng.targetplatform" sequenceNumber="1446724061">
   <locations>
-    <location includeMode="slicer" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="true" type="InstallableUnit">
-      <unit id="org.eclipse.sdk.ide" version="0.0.0"/>
-      <unit id="org.eclipse.platform.sdk" version="0.0.0"/>
-      <unit id="org.eclipse.platform.ide" version="0.0.0"/>
-      <repository location="http://download.eclipse.org/eclipse/updates/4.4"/>
+    <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="true" type="InstallableUnit">
+      <unit id="org.eclipse.sdk.feature.group" version="4.5.1.v20150904-0345"/>
+      <unit id="org.eclipse.platform.feature.group" version="4.5.1.v20150904-0015"/>
+      <repository location="http://download.eclipse.org/eclipse/updates/4.5"/>
     </location>
-    <location includeMode="slicer" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="true" type="InstallableUnit">
-      <unit id="org.eclipse.egit.feature.group" version="0.0.0"/>
-      <unit id="org.eclipse.jgit.feature.group" version="0.0.0"/>
-      <repository location="http://download.eclipse.org/releases/luna"/>
+    <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="true" type="InstallableUnit">
+      <unit id="org.eclipse.egit.core" version="4.0.3.201509231615-r"/>
+      <unit id="org.eclipse.egit.ui" version="4.0.3.201509231615-r"/>
+      <unit id="org.eclipse.jgit.feature.group" version="4.0.3.201509231615-r"/>
+      <repository location="http://download.eclipse.org/releases/mars"/>
     </location>
-    <location includeMode="slicer" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="true" type="InstallableUnit">
+    <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="true" type="InstallableUnit">
       <unit id="org.eclipse.nebula.visualization.feature.feature.group" version="0.0.0"/>
       <repository location="http://download.eclipse.org/technology/nebula/snapshot"/>
     </location>

@@ -1,14 +1,14 @@
-target "eu.hohenegger.gitmine.releng.targetplatform" with source configurePhase
+target "eu.hohenegger.gitmine.releng.targetplatform" with source configurePhase requirements
 
-location "http://download.eclipse.org/eclipse/updates/4.4"{
-	org.eclipse.sdk.ide lazy
-	org.eclipse.platform.sdk lazy
-	org.eclipse.platform.ide lazy
+location "http://download.eclipse.org/eclipse/updates/4.5"{
+	org.eclipse.sdk.feature.group [4.5.0,4.6.0)
+	org.eclipse.platform.feature.group [4.5.0,4.6.0)
 }
 
-location "http://download.eclipse.org/releases/luna" {
-	org.eclipse.egit.feature.group lazy
-	org.eclipse.jgit.feature.group lazy
+location "http://download.eclipse.org/releases/mars" {
+	org.eclipse.egit.core [4.0.3,4.1.0)
+	org.eclipse.egit.ui [4.0.3,4.1.0)
+	org.eclipse.jgit.feature.group [4.0.3,4.1.0)
 }
 
 location "http://download.eclipse.org/technology/nebula/snapshot" {

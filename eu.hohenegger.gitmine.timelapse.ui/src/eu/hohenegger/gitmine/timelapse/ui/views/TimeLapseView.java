@@ -197,7 +197,7 @@ public class TimeLapseView implements IShowInTarget {
 			RevCommit commit2) {
 		IWorkbenchPage workBenchPage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
 		GitCompareEditorInput compareInput = new GitCompareEditorInput(
-				commit1.name(), commit2.name(), (IResource) input);
+				commit1.name(), commit2.name(), repo, (IResource) input);
 		openInCompare(workBenchPage, compareInput);
 	}
 
