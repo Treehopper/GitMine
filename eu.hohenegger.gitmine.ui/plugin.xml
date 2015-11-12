@@ -1,7 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.4"?>
 <plugin>
-
+	<extension
+			point="org.eclipse.ui.menus">
+		<menuContribution
+				locationURI="popup:org.eclipse.egit.ui.RepositoriesView?before=group.open">
+			<separator
+					name="group.gitmine"
+					visible="true">
+			</separator>
+		</menuContribution>
+	</extension>
+	<extension
+			point="org.eclipse.ui.menus">
+		<menuContribution
+				locationURI="popup:org.eclipse.egit.ui.RepositoriesView?after=group.gitmine">
+			<command
+					commandId="eu.hohenegger.gitmine.ui.RunGitMiner"
+					icon="icons/sample.gif"
+					label="%TeamGitmine.name"
+					style="push">
+			</command>
+		</menuContribution>
+	</extension>
    <extension
          point="org.eclipse.ui.views">
       <e4view
@@ -12,25 +33,6 @@
             name="Git Repository Statistics"
             restorable="true">
       </e4view>
-   </extension>
-   <extension
-         point="org.eclipse.ui.perspectiveExtensions">
-      <perspectiveExtension
-            targetID="*">
-         <showInPart
-               id="eu.hohenegger.gitmine.ui.statistics"></showInPart>
-      </perspectiveExtension>
-   </extension>
-   <extension
-         point="org.eclipse.ui.menus">
-      <menuContribution
-            locationURI="popup:org.eclipse.egit.ui.RepositoriesView?after=branch">
-         <command
-               commandId="eu.hohenegger.gitmine.ui.RunGitMiner"
-               label="Open Git Miner"
-               style="push">
-         </command>
-      </menuContribution>
    </extension>
    <extension
          point="org.eclipse.ui.commands">

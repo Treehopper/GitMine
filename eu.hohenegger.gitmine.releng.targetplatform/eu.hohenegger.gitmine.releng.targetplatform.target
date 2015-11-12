@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?pde?>
 <!-- generated with https://github.com/mbarbero/fr.obeo.releng.targetplatform -->
-<target name="eu.hohenegger.gitmine.releng.targetplatform" sequenceNumber="1446724061">
+<target name="eu.hohenegger.gitmine.releng.targetplatform" sequenceNumber="1447350807">
   <locations>
     <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="true" type="InstallableUnit">
       <unit id="org.eclipse.sdk.feature.group" version="4.5.1.v20150904-0345"/>
@@ -17,6 +17,11 @@
     <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="true" type="InstallableUnit">
       <unit id="org.eclipse.nebula.visualization.feature.feature.group" version="0.0.0"/>
       <repository location="http://download.eclipse.org/technology/nebula/snapshot"/>
+    </location>
+    <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="true" type="InstallableUnit">
+      <unit id="org.eclipse.e4.tools.compat" version="0.12.0.v20141113-1753"/>
+      <unit id="org.eclipse.e4.tools.services" version="0.12.0.v20141120-0900"/>
+      <repository location="http://download.eclipse.org/e4/downloads/drops/S-0.17-201501051100/repository/"/>
     </location>
   </locations>
 </target>

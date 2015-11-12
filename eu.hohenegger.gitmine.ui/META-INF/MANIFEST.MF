@@ -1,9 +1,10 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: GitMine
+Bundle-Name: %plugin_name
 Bundle-SymbolicName: eu.hohenegger.gitmine.ui;singleton:=true
 Bundle-Version: 1.1.0.qualifier
 Bundle-Activator: eu.hohenegger.gitmine.ui.Activator
+Bundle-Localization: plugin
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.e4.core.di,
@@ -25,7 +26,8 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.swt,
  org.eclipse.core.expressions,
  org.eclipse.compare,
- org.eclipse.team.ui
+ org.eclipse.team.ui,
+ org.eclipse.e4.tools.compat
 Import-Package: javax.inject;version="1.0.0",javax.annotation; version="1.0.0"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
