@@ -8,6 +8,7 @@
 
 	<modules>
 		<module>eu.hohenegger.gitmine.feature</module>
+		<module>eu.hohenegger.gitmine.timelapse.feature</module>
 		<module>eu.hohenegger.gitmine.p2updatesite</module>
 		<module>eu.hohenegger.gitmine</module>
 		<module>eu.hohenegger.gitmine.ui</module>

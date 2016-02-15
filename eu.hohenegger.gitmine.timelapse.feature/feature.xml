@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-      id="eu.hohenegger.gitmine.feature"
-      label="GitMine Statistics"
+      id="eu.hohenegger.gitmine.timelapse.feature"
+      label="GitMine Timelapse"
       version="1.1.0.qualifier">
 
    <copyright url="http://www.hohenegger.eu">
@@ -213,14 +213,14 @@ litigation.
    </requires>
 
    <plugin
-         id="eu.hohenegger.gitmine"
+         id="eu.hohenegger.gitmine.timelapse.ui"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="eu.hohenegger.gitmine.ui"
+         id="eu.hohenegger.gitmine"
          download-size="0"
          install-size="0"
          version="0.0.0"
