@@ -79,7 +79,7 @@ public class TestBasic {
 		Date firstDay = createDate(2014, Calendar.JANUARY, 1);
 		Date lastDay = createDate(2014, Calendar.FEBRUARY, 1);
 		List<Date> daysInBetween = MiningService.getDaysInBetween(firstDay.getTime(), lastDay.getTime());
-		assertEquals(30, daysInBetween.size());
+		assertEquals(31, daysInBetween.size());
 		for (Date date : daysInBetween) {
 			assertTrue(date.compareTo(firstDay) > 0);
 			assertTrue(date.compareTo(lastDay) < 0);
